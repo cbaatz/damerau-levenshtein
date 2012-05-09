@@ -1,0 +1,16 @@
+{
+    "name": "damerau-levenshtein",
+    "version": "0.0.1",
+    "description": "Implementation of the Damerau-Levenshtein edit distance.",
+    "author": "Carl Baatz",
+    "licenses": [
+        {"type": "UNLICENSE", "url": "http://unlicense.org/"}
+    ],
+    "main": "./damerau-levenshtein",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/cbaatz/damerau-levenshtein.git"
+    },
+    "engine" : [ "node >=0.6" ],
+    "dependencies" : {}
+}
