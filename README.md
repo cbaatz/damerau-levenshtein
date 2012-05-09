@@ -1,10 +1,13 @@
 Damerau-Levenshtein
 ===================
 
-This is an implementation of the
+This is an implementation of the optimal string alignment (restricted)
+version of the
 [Damerau-Levenshtein](http://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance)
-edit distance in JavaScript (1.6). It lacks tests. It has not been
-optimised for speed.
+edit distance algorithm in JavaScript (1.6). It lacks tests. It has
+not been optimised for speed. It calculates the minimal edit cost of
+turning the first string into the second (the order matters when costs
+are asymmetric).
 
 Install with [npm](http://npmjs.org/):
 
