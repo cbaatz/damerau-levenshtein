@@ -6,15 +6,26 @@ This is an implementation of the
 edit distance in JavaScript (1.6). It lacks tests. It has not been
 optimised for speed.
 
-It supports custom cost functions for insert, remove, substitute, and
-transpose, either as constants or functions parameterised by the
-characters involved. For example:
+Install with [npm](http://npmjs.org/):
+
+    npm install git://github.com/cbaatz/damerau-levenshtein.git
+
+Quick test from command line:
+
+    node -e "console.log(require('damerau-levenshtein')()('hello', 'world'));"
+
+It supports specifying custom costs for insertions, removals,
+substitutions, and transpositions, either as constants or functions
+parameterised by the characters involved. For example:
 
     var DL = require('damerau-levenshtein');
     var distance = DL({
         insert: 1,
         remove: 0.5,
-        substitute: 0.8,
+        substitute: function (from, to) {
+            if (from === 'a') return 0.8;
+            else return 1;
+        },
         transpose: function (backward, forward) {
             if (backward === 'n') return 0.5;
             else return 1;
