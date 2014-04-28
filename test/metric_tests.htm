@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>metric properties test</title>
+		
+		<link rel="stylesheet" type="text/css" href="./JSSpec.css" />
+        <script src="./JSSpec.js"></script>
+		
+		<script src="./english_6000.js"></script>
+		<script src="./../damerau-levenshtein.js"></script>
+		
+		<script>
+			
+			var damerauLevenshtein = new DamerauLevenshtein();
+			
+			describe('basic',
+			{
+				before_each: function()
+				{
+					//
+				},
+				
+				after_each: function()
+				{
+					//
+				},
+				'empty string': function()
+				{
+					var a = "";
+					var b = "";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(0);
+				},
+				'non empty against empty string': function()
+				{
+					var a = "azerty";
+					var b = "";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(6);
+				},
+				'empty against non empty string': function()
+				{
+					var a = "";
+					var b = "qwerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(6);
+				},
+				'adding to end': function()
+				{
+					var a = "azer";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(2);
+				},
+				'adding to start': function()
+				{
+					var a = "erty";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(2);
+				},
+				'adding to both ends': function()
+				{
+					var a = "zert";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(2);
+				},
+				'adding to middle': function()
+				{
+					var a = "azty";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(2);
+				},
+				'adding to middle and both ends': function()
+				{
+					var a = "zt";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(4);
+				},
+				'removing from end': function()
+				{
+					var a = "azer";
+					var b = "azerty";
+					var c = damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(2);
+				},
+				'removing from start': function()
+				{
+					var a = "erty";
+					var b = "azerty";
+					var c = damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(2);
+				},
+				'removing from both ends': function()
+				{
+					var a = "zert";
+					var b = "azerty";
+					var c = damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(2);
+				},
+				'removing from middle': function()
+				{
+					var a = "azty";
+					var b = "azerty";
+					var c = damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(2);
+				},
+				'removing from middle and both ends': function()
+				{
+					var a = "zt";
+					var b = "azerty";
+					var c = damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(4);
+				},
+				'substitution': function()
+				{
+					var a = "azErtY";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(2);
+				},
+				'permutation': function()
+				{
+					var a = "azrety";
+					var b = "azerty";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(1);
+				},
+				'metric space - identity of indiscernibles': function()
+				{
+					var a = "azerty";
+					var b = a;
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(0);
+				},
+				'metric space - symmetry': function()
+				{
+					var a = "azerty";
+					var b = "qwerty";
+					var c = damerauLevenshtein(a, b) === damerauLevenshtein(b, a);
+					
+					value_of(c).should_be(true);
+				},
+				'metric space - triangle inequality edge 1': function()
+				{
+					var a = "rick";
+					var b = "rcik";
+					var c = "irkc";
+					
+					var ab = damerauLevenshtein(a, b);
+					var ac = damerauLevenshtein(a, c);
+					var bc = damerauLevenshtein(b, c);
+					
+					var eql = ab + ac >= bc;
+					
+					value_of(eql).should_be(true);
+				},
+				'metric space - triangle inequality edge 2': function()
+				{
+					var a = "rick";
+					var b = "rcik";
+					var c = "irkc";
+					
+					var ab = damerauLevenshtein(a, b);
+					var ac = damerauLevenshtein(a, c);
+					var bc = damerauLevenshtein(b, c);
+					
+					var eql = ab + bc >= ac;
+					
+					value_of(eql).should_be(true);
+				},
+				'metric space - triangle inequality edge 3': function()
+				{
+					var a = "rick";
+					var b = "rcik";
+					var c = "irkc";
+					
+					var ab = damerauLevenshtein(a, b);
+					var ac = damerauLevenshtein(a, c);
+					var bc = damerauLevenshtein(b, c);
+					
+					var eql = ac + bc >= ab;
+					
+					value_of(eql).should_be(true);
+				},
+				'moral, carry': function()
+				{
+					var a = "moral";
+					var b = "carry";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(4);
+				},
+				'across, is': function()
+				{
+					var a = "across";
+					var b = "is";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(5);
+				},
+				'beak, water': function()
+				{
+					var a = "beak";
+					var b = "water";
+					var c = damerauLevenshtein(a, b);
+					
+					value_of(c).should_be(4);
+				}
+			});
+			
+			
+			
+			// random words to check for non negativity
+			
+			// random words to check against whole dictionary
+			var db = db_english_6000;
+			var refWords = [];
+			for(var i = 30; i--;){
+				
+				refWords[i] = Math.round(Math.random()*db.length);
+			}
+			
+			var random_tests_nonnegative = {
+				before_each: function()
+				{
+					//
+				},
+				
+				after_each: function()
+				{
+					//
+				}
+			};
+
+			for(var i = 0; i<refWords.length; i++){
+				
+				(function(i){
+					
+					random_tests_nonnegative['random test - non negativity 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
+						
+						for(var j = 0; j<db.length; j++){
+							
+							var a = damerauLevenshtein(db[refWords[i]], db[j]);
+							var positive = a >= 0;
+							if(!positive) positive = "failed at " + j + " ("+db[refWords[i]]+","+db[j]+") => " + a;
+							value_of(positive).should_be(true);
+						}
+					};
+				})(i);
+			}
+			describe('metric space - non negativity (' + (refWords.length*db.length) + ' random runs)', random_tests_nonnegative);
+			
+			
+			
+			// random words to check for identity of indiscernibles
+			
+			// random words to check against whole dictionary
+			var db = db_english_6000;
+			var refWords = [];
+			for(var i = 30; i--;){
+				
+				refWords[i] = Math.round(Math.random()*db.length);
+			}
+			
+			var random_tests_indiscernibles = {
+				before_each: function()
+				{
+					//
+				},
+				
+				after_each: function()
+				{
+					//
+				}
+			};
+
+			for(var i = 0; i<refWords.length; i++){
+				
+				(function(i){
+					
+					random_tests_indiscernibles['random test - identity of indiscernibles 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
+						
+						for(var j = 0; j<db.length; j++){
+							
+							var a = damerauLevenshtein(db[refWords[i]], db[j]);
+							var identity = (a > 0) ? (db[refWords[i]] !== db[j]) : (db[refWords[i]] === db[j]);
+							if(!identity) identity = "failed at " + j + " ("+db[refWords[i]]+","+db[j]+") => " + a;
+							value_of(identity).should_be(true);
+						}
+					};
+				})(i);
+			}
+			describe('metric space - identity of indiscernibles (' + (refWords.length*db.length) + ' random runs)', random_tests_indiscernibles);
+			
+			
+			
+			// random words to check for symmetry
+			
+			// random words to check against whole dictionary
+			var db = db_english_6000;
+			var refWords = [];
+			for(var i = 30; i--;){
+				
+				refWords[i] = Math.round(Math.random()*db.length);
+			}
+			
+			var random_tests_symmetry = {
+				before_each: function()
+				{
+					//
+				},
+				
+				after_each: function()
+				{
+					//
+				}
+			};
+
+			for(var i = 0; i<refWords.length; i++){
+				
+				(function(i){
+					
+					random_tests_symmetry['random test - symmetry 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
+						
+						for(var j = 0; j<db.length; j++){
+							
+							var a = damerauLevenshtein(db[refWords[i]], db[j]);
+							var b = damerauLevenshtein(db[j], db[refWords[i]]);
+							var symmetry = a === b;
+							if(!symmetry) symmetry = "failed at " + j + " ("+db[refWords[i]]+","+db[j]+") => " + a + " / " + b;
+							value_of(symmetry).should_be(true);
+						}
+					};
+				})(i);
+			}
+			describe('metric space - symmetry (' + (refWords.length*db.length*2) + ' random runs)', random_tests_symmetry);
+			
+			
+			
+			// random words to check for triangle inequality
+			var triangles = 3000;
+			var random_tests_triangle = {
+				before_each: function()
+				{
+					//
+				},
+				
+				after_each: function()
+				{
+					//
+				}
+			};
+
+			for(var i = 0; i<triangles; i++){
+				
+				(function(){
+					
+					// 3 randomly chosen words
+					var a = Math.round(Math.random()*db.length);
+					var b = Math.round(Math.random()*db.length);
+					var c = Math.round(Math.random()*db.length);
+					
+					random_tests_triangle['random test - triangle inequality between "' + db[a] + '" (#'+a+'), "' + db[b] + '" (#'+b+'), "' + db[c] + '" (#'+c+')'] = function(){
+						
+						var ab = damerauLevenshtein(db[a], db[b]);
+						var ac = damerauLevenshtein(db[a], db[c]);
+						var bc = damerauLevenshtein(db[b], db[c]);
+						
+						var eql1 = ab + ac >= bc;
+						var eql2 = ab + bc >= ac;
+						var eql3 = ac + bc >= ab;
+						
+						value_of(eql1 && eql2 && eql3).should_be(true);
+					};
+				})();
+			}
+			describe('metric space - triangle inequality (' + (triangles*3) + ' random runs)', random_tests_triangle);
+        </script>
+	</head>	
+	<body></body>
+</html>
