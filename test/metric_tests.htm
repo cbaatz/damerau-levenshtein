@@ -256,7 +256,7 @@
 
 			for(var i = 0; i<refWords.length; i++){
 				
-				(function(i){
+				(function(i, refWords){
 					
 					random_tests_nonnegative['random test - non negativity 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
 						
@@ -268,7 +268,7 @@
 							value_of(positive).should_be(true);
 						}
 					};
-				})(i);
+				})(i, refWords);
 			}
 			describe('metric space - non negativity (' + (refWords.length*db.length) + ' random runs)', random_tests_nonnegative);
 			
@@ -298,7 +298,7 @@
 
 			for(var i = 0; i<refWords.length; i++){
 				
-				(function(i){
+				(function(i, refWords){
 					
 					random_tests_indiscernibles['random test - identity of indiscernibles 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
 						
@@ -310,7 +310,7 @@
 							value_of(identity).should_be(true);
 						}
 					};
-				})(i);
+				})(i, refWords);
 			}
 			describe('metric space - identity of indiscernibles (' + (refWords.length*db.length) + ' random runs)', random_tests_indiscernibles);
 			
@@ -340,7 +340,7 @@
 
 			for(var i = 0; i<refWords.length; i++){
 				
-				(function(i){
+				(function(i, refWords){
 					
 					random_tests_symmetry['random test - symmetry 6000 english words against "' + db[refWords[i]] + '" (#'+refWords[i]+')'] = function(){
 						
@@ -353,7 +353,7 @@
 							value_of(symmetry).should_be(true);
 						}
 					};
-				})(i);
+				})(i, refWords);
 			}
 			describe('metric space - symmetry (' + (refWords.length*db.length*2) + ' random runs)', random_tests_symmetry);
 			
