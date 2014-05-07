@@ -204,6 +204,42 @@
 					
 					value_of(eql).should_be(true);
 				},
+				'metric space - triangle inequality quite / quiet / reject': function()
+				{
+					var a = "quite";
+					var b = "quiet";
+					var c = "reject";
+					
+					var ab = damerauLevenshtein(a, b);
+					var ac = damerauLevenshtein(a, c);
+					var bc = damerauLevenshtein(b, c);
+							
+					var eql1 = ab + ac >= bc;
+					var eql2 = ab + bc >= ac;
+					var eql3 = ac + bc >= ab;
+					
+					var eql = eql1 && eql2 && eql3;
+					
+					value_of(eql).should_be(true);
+				},
+				'metric space - triangle inequality leisure / Legislature / lies': function()
+				{
+					var a = "leisure";
+					var b = "Legislature";
+					var c = "lies";
+					
+					var ab = damerauLevenshtein(a, b);
+					var ac = damerauLevenshtein(a, c);
+					var bc = damerauLevenshtein(b, c);
+							
+					var eql1 = ab + ac >= bc;
+					var eql2 = ab + bc >= ac;
+					var eql3 = ac + bc >= ab;
+					
+					var eql = eql1 && eql2 && eql3;
+					
+					value_of(eql).should_be(true);
+				},
 				'moral, carry': function()
 				{
 					var a = "moral";
@@ -360,7 +396,8 @@
 			
 			
 			// random words to check for triangle inequality
-			var triangles = 3000;
+			var triangles_sets = 300;
+			var triangles = 10000;
 			var random_tests_triangle = {
 				before_each: function()
 				{
@@ -373,30 +410,37 @@
 				}
 			};
 
-			for(var i = 0; i<triangles; i++){
+			for(var i = 0; i<triangles_sets; i++){
 				
 				(function(){
 					
-					// 3 randomly chosen words
-					var a = Math.round(Math.random()*(db.length-1));
-					var b = Math.round(Math.random()*(db.length-1));
-					var c = Math.round(Math.random()*(db.length-1));
-					
-					random_tests_triangle['random test - triangle inequality between "' + db[a] + '" (#'+a+'), "' + db[b] + '" (#'+b+'), "' + db[c] + '" (#'+c+')'] = function(){
+					random_tests_triangle['random test - ' + triangles + ' triangle inequality (set #' + i + ')'] = function(){
 						
-						var ab = damerauLevenshtein(db[a], db[b]);
-						var ac = damerauLevenshtein(db[a], db[c]);
-						var bc = damerauLevenshtein(db[b], db[c]);
-						
-						var eql1 = ab + ac >= bc;
-						var eql2 = ab + bc >= ac;
-						var eql3 = ac + bc >= ab;
-						
-						value_of(eql1 && eql2 && eql3).should_be(true);
+						var i = triangles;
+						while(i--){
+							
+							// 3 randomly chosen words
+							var a = Math.round(Math.random()*(db.length-1));
+							var b = Math.round(Math.random()*(db.length-1));
+							var c = Math.round(Math.random()*(db.length-1));
+							
+							var ab = damerauLevenshtein(db[a], db[b]);
+							var ac = damerauLevenshtein(db[a], db[c]);
+							var bc = damerauLevenshtein(db[b], db[c]);
+							
+							var eql1 = ab + ac >= bc;
+							var eql2 = ab + bc >= ac;
+							var eql3 = ac + bc >= ab;
+							
+							var eql = eql1 && eql2 && eql3;
+							if(!eql) eql = db[a] + " / " + db[b] + " / " + db[c];
+							
+							value_of(eql).should_be(true);
+						}
 					};
 				})();
 			}
-			describe('metric space - triangle inequality (' + (triangles*3) + ' random runs)', random_tests_triangle);
+			describe('metric space - triangle inequality (' + (triangles_sets*triangles*3) + ' random runs)', random_tests_triangle);
         </script>
 	</head>	
 	<body></body>
