@@ -239,7 +239,7 @@
 			var refWords = [];
 			for(var i = 30; i--;){
 				
-				refWords[i] = Math.round(Math.random()*db.length);
+				refWords[i] = Math.round(Math.random()*(db.length-1));
 			}
 			
 			var random_tests_nonnegative = {
@@ -281,7 +281,7 @@
 			var refWords = [];
 			for(var i = 30; i--;){
 				
-				refWords[i] = Math.round(Math.random()*db.length);
+				refWords[i] = Math.round(Math.random()*(db.length-1));
 			}
 			
 			var random_tests_indiscernibles = {
@@ -323,7 +323,7 @@
 			var refWords = [];
 			for(var i = 30; i--;){
 				
-				refWords[i] = Math.round(Math.random()*db.length);
+				refWords[i] = Math.round(Math.random()*(db.length-1));
 			}
 			
 			var random_tests_symmetry = {
@@ -378,9 +378,9 @@
 				(function(){
 					
 					// 3 randomly chosen words
-					var a = Math.round(Math.random()*db.length);
-					var b = Math.round(Math.random()*db.length);
-					var c = Math.round(Math.random()*db.length);
+					var a = Math.round(Math.random()*(db.length-1));
+					var b = Math.round(Math.random()*(db.length-1));
+					var c = Math.round(Math.random()*(db.length-1));
 					
 					random_tests_triangle['random test - triangle inequality between "' + db[a] + '" (#'+a+'), "' + db[b] + '" (#'+b+'), "' + db[c] + '" (#'+c+')'] = function(){
 						
